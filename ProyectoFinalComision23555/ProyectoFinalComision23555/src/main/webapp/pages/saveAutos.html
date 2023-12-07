@@ -39,7 +39,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="cod-md-6">
+                                        <div class="col-md-6">
                                             <div class="form-floating my-3">
                                                 <input type="text" class="form-control" name="marca" id="marca" required/>
                                                 <label for="marca">Marca</label>
@@ -71,9 +71,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                             <div class="form-floating my-3">
                                                 <input type="number" class="form-control" name="precio" id="precio" required/>
                                                 <label for="precio">Precio</label>
-                                            </div>                                            
+                                            </div>                                                                                        
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-group my-3">
+                                                <label class="input-group-text" for="imagen">Imagen del Auto</label>
+                                                <input type="file" class="form-control" name="imagen" id="imagen" aria-describedby="inputGroupFileAddon03" aria-label="Upload" accept="media/*" required/>
+                                            </div>
+                                            <div class="container d-none w-75 text-center" id="imagenContainer" >
+                                                <h4 class="mx-auto my-3">Previsualización</h4>
+                                                <img class="img-fluid mt-4 rounded mx-auto d-block" id="imagenPreview" src="" alt="Vista Previa Imagen" />
+                                            </div>
                                         </div>
                                     </div>
+                                    <button class="btn btn-primary mt-3" type="submit">Agegar Auto</button>
                                 </div>
                             </div>
                         </div>
@@ -83,6 +94,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         </div>
     </body>
     
+    <script src="../js/postRequest.js"></script>
     <script src="../js/bootstrap.min.js"></script> 
     <script src="../js/bootstrap.bundle.js"></script>
     <script src="../js/bootstrap.js"></script>  

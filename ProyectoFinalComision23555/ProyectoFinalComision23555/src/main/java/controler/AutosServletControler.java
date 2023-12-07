@@ -6,16 +6,22 @@ package controler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import data.AutosDAO;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.Autos;
+import org.apache.commons.io.IOUtils;
 
 
 /**
@@ -23,6 +29,13 @@ import model.Autos;
  * @author Ariel
  */
 @WebServlet("/autos")
+@MultipartConfig(
+        location = "/media/temp",
+        fileSizeThreshold = 1024 * 1024, //1 mb tamaño umbral
+        maxFileSize = 1024 * 1024 * 5 , //tamaño maximo en bytes 5mb
+        maxRequestSize = 1024 * 1024 * 10
+)
+
 public class AutosServletControler extends HttpServlet {
 
     List<Autos> autosList = new ArrayList();
@@ -51,7 +64,30 @@ public class AutosServletControler extends HttpServlet {
     }
     
     @Override
-    protected void doPost(HttpServletRequest req,HttpServletResponse res){
+    protected void doPost(HttpServletRequest req,HttpServletResponse res) throws IOException, ServletException{
+        String route = req.getParameter("action");
+        
+        if (route.equals("add")){        
+                String marca = req.getParameter("marca");
+                String modelo = req.getParameter("modelo");
+                String nacionalidad = req.getParameter("nacionalidad");
+                String periodo = req.getParameter("periodo");
+                String potencia = req.getParameter("potencia");
+                String aceleracion = req.getParameter("aceleracion");
+                String velocidad = req.getParameter("velocidad");
+                Double precio = Double.parseDouble(req.getParameter("precio"));
+                
+                Part filePart = req.getPart("imagen");
+                byte[] imagenBytes = IOUtils.toByteArray(filePart.getInputStream());
+                
+                Autos newAuto = new Autos(marca,modelo,nacionalidad,periodo,potencia,aceleracion,velocidad,precio,imagenBytes);
+                AutosDAO.insertar(newAuto);
+                res.setContentType("application/json");
+                Map <String,String> response = new HashMap();
+                response.put("message","Libro Agregado Exitosamente ...");
+                mapper.writeValue(res.getWriter(), response);
+                
+            }
         
     }
     

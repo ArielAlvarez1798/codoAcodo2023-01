@@ -74,7 +74,7 @@ public class AutosDAO {
             return autos;
         }    
     
-    public Autos seleccionarPorNombre(String nombre) {
+    public static Autos seleccionarPorNombre(String nombre) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -118,7 +118,8 @@ public class AutosDAO {
         return auto;
     }
 
-    public int insertar(Autos auto){
+    public static int insertar(Autos auto){
+      
         Connection conn = null;
         PreparedStatement stmt = null;
         int registros = 0;
@@ -155,7 +156,7 @@ public class AutosDAO {
         return registros;
     }
     
-    public int eliminar(Autos auto){
+    public static int eliminar(Autos auto){
         Connection conn = null;
         PreparedStatement stmt = null;
         int registros = 0;
