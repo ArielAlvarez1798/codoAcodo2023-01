@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../styles/styles.css">
+        <link rel="stylesheet" href="../styles/bootstrap.css">          
+    </head>
+    <body>
+            <nav class="navbar bg-dark navbar-dark navbar-expand-lg sticky-top">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="../index.html">
+                        <img src="../media/codoacodo.png" class="img-fluid" alt="Logo Codo a Codo" id="logoCaC">
+                    </a>                
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                         <span class="navbar-toggler-icon"></span>
+                     </button>
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <!-- agregar elementos del navbar -->
+                        </ul>
+                     </div>
+                </div>
+            </nav>    
+            <div class="bg-secondary py-3">
+                <h1 class="py-3 ps4 text-light">Detalle de Autos</h1>
+            </div>      
+                
+            <main class="container my-3">
+                <div class="row mt-3">
+                    <div class="col-md-12 mb-3">
+                        <div class="card">
+                            <div class="row" id="autoDetails">
+                                
+                            </div>
+                            <div class="d-flex justify-content-end align-items-end mb-3" id="btnContainer">
+                                <button type="button" class="btn btn-secondary" id="btnModificar">Modificar</button>
+                                <button type="button" class="btn btn-danger mx-3" id="btnEliminar">Borrar</button>
+                                <button class="btn btn-primary mt-3 me-3 d-none" form="updateBookForm" type="submit" id="btnGuardar">Guardar Cambios</button>
+                            </div>
+                        </div>                             
+                    </div>
+                </div>
+
+            </main>    
+        <script src="../js/bootstrap.min.js"></script> 
+        <script src="../js/bootstrap.bundle.js"></script>
+        <script src="../js/AutoDetails.js"></script>  
+    </body>
+</html>

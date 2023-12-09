@@ -10,9 +10,9 @@ import model.Autos;
 
 public class AutosDAO {        
     
-    private static final String SQL_SELECT_BY_NAME = "SELECT idAuto,marca,modelo FROM deportivos WHERE modelo = ?";
+    private static final String SQL_SELECT_BY_ID = "SELECT idauto,marca,modelo,nacionalidad,periodo,potencia,aceleracion,velocidad,precio,imagen FROM deportivos WHERE idauto = ?";
    
-    private static final String SQL_SELECT = "SELECT * FROM deportivos";
+    private static final String SQL_SELECT = "SELECT idauto,marca,modelo,nacionalidad,periodo,potencia,aceleracion,velocidad,precio,imagen FROM deportivos";
     
     private static final String SQL_INSERT = "INSERT INTO deportivos(marca,modelo,nacionalidad,periodo,potencia,aceleracion,velocidad,imagen,precio) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
@@ -25,7 +25,7 @@ public class AutosDAO {
     
     
     
-    public static List<Autos> seleccionar() {
+    public static List<Autos> seleccionar(int id) {
             
             Connection conn = null;
             PreparedStatement stmt = null;
@@ -36,11 +36,16 @@ public class AutosDAO {
             try {
                 
                 conn = getConexion();
-                stmt = conn.prepareStatement(SQL_SELECT);
+                if (id==0){
+                    stmt = conn.prepareStatement(SQL_SELECT);
+                }else   {
+                    stmt = conn.prepareStatement(SQL_SELECT_BY_ID);
+                    stmt.setInt(1, id);
+                } 
                 rs = stmt.executeQuery();
                                  
                 while (rs.next()) {
-                    int idAuto = rs.getInt(1);
+                    int idauto = rs.getInt("idAuto");
                     String marca = rs.getString("marca");
                     String modelo = rs.getString("modelo");
                     String nacionalidad = rs.getString("nacionalidad");
@@ -53,10 +58,11 @@ public class AutosDAO {
                     Blob blob = rs.getBlob("imagen");
                     byte[] imagenBytes = blob.getBytes(1,(int)blob.length());
                     
-                    auto = new Autos(idAuto,marca,modelo,nacionalidad,periodo,potencia,aceleracion,
+                    auto = new Autos(idauto,marca,modelo,nacionalidad,periodo,potencia,aceleracion,
                         velocidad,precio,imagenBytes);
 
                     autos.add(auto);
+                   
                    
                 }
             } catch (SQLException ex) {
@@ -74,7 +80,7 @@ public class AutosDAO {
             return autos;
         }    
     
-    public static Autos seleccionarPorNombre(String nombre) {
+    public static Autos seleccionarPorId(int idauto) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -82,12 +88,12 @@ public class AutosDAO {
 
         try {
             conn = getConexion();
-            stmt = conn.prepareStatement(SQL_SELECT_BY_NAME);
-            stmt.setString(1, nombre);
+            stmt = conn.prepareStatement(SQL_SELECT_BY_ID);
+            stmt.setInt(1, idauto);
             rs = stmt.executeQuery();
             
             while (rs.next()) {
-                int idauto = rs.getInt("idauto");
+                //int idauto = rs.getInt("idauto");
                 String marca = rs.getString("marca");
                 String modelo = rs.getString("modelo");
                 String nacionalidad = rs.getString("nacionalidad");
@@ -105,7 +111,7 @@ public class AutosDAO {
             }
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
-        } finally {
+        } /*finally {
             try {
                 close(rs);
                 close(stmt);
@@ -113,7 +119,7 @@ public class AutosDAO {
             } catch (SQLException ex) {
                 ex.printStackTrace(System.out);
             }
-        }
+        }*/
 
         return auto;
     }

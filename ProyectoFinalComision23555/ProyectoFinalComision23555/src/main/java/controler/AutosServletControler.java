@@ -46,20 +46,39 @@ public class AutosServletControler extends HttpServlet {
         String route = req.getParameter("action");
         
        
-       if (route.equals("getAll")){
-              
+       if (route.equals("getAll")){             
             res.setContentType("application/json; charset=UTF-8");
-            autosList = AutosDAO.seleccionar();
+            autosList = AutosDAO.seleccionar(0);
             
             for (Autos auto : autosList){
                 byte[] imagenBytes = auto.getImagen();
                 String imagenBase64 = Base64.getEncoder().encodeToString(imagenBytes);
-                auto.setImagenBase64(imagenBase64);
+                auto.setImagenBase64(imagenBase64);                
             }
-            mapper.writeValue(res.getWriter(), autosList);
-            } else{        
-                 System.out.println("parametro no valido");
-           }
+                mapper.writeValue(res.getWriter(), autosList);
+            }
+       
+        if (route.equals("getDetails")){
+            String idauto = req.getParameter("idAuto");
+            res.setContentType("application/json; charset=UTF-8");
+            
+            Autos autoDetail = AutosDAO.seleccionarPorId(Integer.parseInt(idauto));          
+            
+            mapper.writeValue(res.getWriter(), autoDetail);           
+        }
+        
+        if (route.equals("getById")){
+            String idauto = req.getParameter("idAuto");
+            res.setContentType("application/json; charset=UTF-8");
+            
+            Autos autoDetail = AutosDAO.seleccionarPorId(Integer.parseInt(idauto));          
+            
+            byte[] imagenByte = autoDetail.getImagen();
+            String imagenBase64 = Base64.getEncoder().encodeToString(imagenByte);
+            autoDetail.setImagenBase64(imagenBase64);
+          
+            mapper.writeValue(res.getWriter(), autoDetail);           
+        }
         
     }
     
