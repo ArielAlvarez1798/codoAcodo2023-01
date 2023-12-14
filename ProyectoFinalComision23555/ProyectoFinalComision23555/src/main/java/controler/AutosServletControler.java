@@ -43,8 +43,7 @@ public class AutosServletControler extends HttpServlet {
     
     @Override
     protected void doGet(HttpServletRequest req,HttpServletResponse res) throws IOException {
-        String route = req.getParameter("action");
-        
+        String route = req.getParameter("action");       
        
        if (route.equals("getAll")){             
             res.setContentType("application/json; charset=UTF-8");
@@ -103,15 +102,59 @@ public class AutosServletControler extends HttpServlet {
                 AutosDAO.insertar(newAuto);
                 res.setContentType("application/json");
                 Map <String,String> response = new HashMap();
-                response.put("message","Libro Agregado Exitosamente ...");
+                response.put("message","Auto Agregado Exitosamente ...");
                 mapper.writeValue(res.getWriter(), response);
                 
             }
-        
+        if (route.equals("update")){           
+            try{
+                int id = Integer.parseInt(req.getParameter("id"));
+                String marca = req.getParameter("marca");
+                String modelo = req.getParameter("modelo");
+                String nacionalidad = req.getParameter("nacionalidad");
+                String periodo = req.getParameter("periodo");
+                String potencia = req.getParameter("potencia");
+                String aceleracion = req.getParameter("aceleracion");
+                String velocidad = req.getParameter("velocidad");
+                double precio = Double.parseDouble(req.getParameter("precio"));
+
+                Part filePart = req.getPart("imagen");
+                byte[] imagenBytes = IOUtils.toByteArray(filePart.getInputStream());
+
+                Autos updateAuto = new Autos(id,marca,modelo,nacionalidad,periodo,potencia,aceleracion,velocidad,precio,imagenBytes);
+                AutosDAO.actualizar(updateAuto);
+
+                
+                res.setContentType("application/json");
+                res.setCharacterEncoding("UTF-8");
+                res.getWriter().write("{\"success\":true}");
+                
+            }catch(Exception e){
+               res.setContentType("application/json");
+               res.setCharacterEncoding("UTF-8");
+               res.getWriter().write("{\"success\":false, \"message\": \"Error al borrar registro\"}");
+            }
+        }
     }
     
     @Override
-    protected void doDelete(HttpServletRequest req,HttpServletResponse res){
+    protected void doDelete(HttpServletRequest req,HttpServletResponse res) throws IOException {
+        String route = req.getParameter("action");
         
-    }    
+        if (route.equals("delete")){
+           try{
+                int idauto = Integer.parseInt(req.getParameter("idAuto"));
+                int result = AutosDAO.eliminar(idauto);
+                
+                
+                res.setContentType("application/json");
+                res.setCharacterEncoding("UTF-8");
+                res.getWriter().write("{\"success\":true}");
+            }catch(Exception e){
+                res.setContentType("application/json");
+                res.setCharacterEncoding("UTF-8");
+                res.getWriter().write("{\"success\":false, \"message\": \"Error al borrar registro\"}");
+            }
+        }
+    }     
 }

@@ -39,12 +39,14 @@ document.addEventListener("DOMContentLoaded", function(){
         })
             .then(response => response.json())
             .then(data=>{
-                parrafoAlerta.textContent = data.message;
-                addAutosForm.appendChild(parrafoAlerta);
+                //el siguiente codigo agrega un mensaje en el form, se reemplazo con window.alert
+                //parrafoAlerta.textContent = data.message;
+                //addAutosForm.appendChild(parrafoAlerta);
                 
+                window.alert(data.message);
                  
                 setTimeout(() => {
-                    parrafoAlerta.remove();
+                    //parrafoAlerta.remove();
                     marcaElement.value="";
                     modeloElement.value="";
                     nacionalidadElement.value="";

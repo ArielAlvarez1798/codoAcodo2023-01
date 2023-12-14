@@ -15,7 +15,7 @@ import model.Autos;
 public class main {
     
     //public static void main(String[] args) {
-     public void lista(){
+    public void lista(){
          List<Autos> listaAutos;
          listaAutos = AutosDAO.seleccionar(0);
          System.out.println("Lista de autos" + listaAutos.size());
@@ -24,8 +24,10 @@ public class main {
          }
          
          Autos au = AutosDAO.seleccionarPorId(1);
+         au.setPrecio(50000000);
          System.out.println("***>>" + au) ;
          
+         AutosDAO.actualizar(au);
          /*
          Autos newAuto = new Autos("a","b","c","d","e","f","g",1500,null);
          int res = AutosDAO.insertar(newAuto);

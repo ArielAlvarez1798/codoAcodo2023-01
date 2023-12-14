@@ -16,7 +16,7 @@ public class AutosDAO {
     
     private static final String SQL_INSERT = "INSERT INTO deportivos(marca,modelo,nacionalidad,periodo,potencia,aceleracion,velocidad,imagen,precio) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
-    private static final String SQL_UPDATE = "UPDATE deportivos SET marca = ?, modelo = ?,nacionalidad = ?,periodo = ?,potencia = ?,aceleracion = ?,velocidad = ?,imagen = ?,precio = ? WHERE idauto = ?";
+    private static final String SQL_UPDATE = "UPDATE deportivos SET marca = ?, modelo = ?,nacionalidad = ?,periodo = ?,potencia = ?,aceleracion = ?,velocidad = ?,precio = ? WHERE idauto = ?";
     
     private static final String SQL_LOGIC_DELETE = "UPDATE deportivos SET baja = ? WHERE idauto = ?";
    
@@ -162,7 +162,8 @@ public class AutosDAO {
         return registros;
     }
     
-    public static int eliminar(Autos auto){
+    public static int eliminar(int auto){
+       
         Connection conn = null;
         PreparedStatement stmt = null;
         int registros = 0;
@@ -170,9 +171,10 @@ public class AutosDAO {
             conn = getConexion();
             
             stmt = conn.prepareStatement(SQL_DELETE);
-            stmt.setInt(1, auto.getIdAuto());
-            
+            stmt.setInt(1, auto);
+                                
             registros = stmt.executeUpdate();
+            System.out.println("borra" +registros );
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
         }
@@ -187,4 +189,42 @@ public class AutosDAO {
         return registros;
     }    
      
+    public static int actualizar(Autos auto){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        int registros = 0;
+        try {
+            conn = getConexion();
+            stmt = conn.prepareStatement(SQL_UPDATE);
+            stmt.setString(1, auto.getMarca());
+            stmt.setString(2, auto.getModelo());
+            stmt.setString(3,auto.getNacionalidad());
+            stmt.setString(4,auto.getPeriodo());
+            stmt.setString(5,auto.getPotencia());
+            stmt.setString(6,auto.getAceleracion());
+            stmt.setString(7,auto.getVelocidad());
+            
+            /*
+            Blob imagenBlob = conn.createBlob();
+            imagenBlob.setBytes(1,auto.getImagen());
+            stmt.setBlob(8, imagenBlob);*/
+            
+            stmt.setDouble(8,auto.getPrecio());
+            stmt.setInt(9, auto.getIdAuto());
+            
+            registros = stmt.executeUpdate();            
+            
+         } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        finally{
+            try {
+                close(stmt);
+                close(conn);
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+        return registros;
+    }
 }

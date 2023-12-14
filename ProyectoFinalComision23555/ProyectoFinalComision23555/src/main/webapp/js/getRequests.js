@@ -1,20 +1,20 @@
 document.addEventListener("DOMContentLoaded", function(){
     const autoCards = document.getElementById("autosCards");
-    const autos = [];
+    const autos = [];    
     
     function loadAutosList(){               
         fetch("/app/autos?action=getAll")
                 .then(response=> response.json())
                 .then(data =>{
                     data.forEach(auto =>{
-                       autos.push(auto)              
+                       autos.push(auto)                  
                        autoCards.innerHTML += `
                             <div class="col-md-3 mb-4 ident" data-id-Auto = "${auto.idAuto}">
                                 <div class="card h-100 animate-hover-card bg-light">  
                                     <div class="card-header text-center">
                                         <h2 class="card-title">${auto.marca} ${auto.modelo}</h2>
                                     </div> 
-                                    <img src="data:image/jpeg;base64,${auto.imagenBase64}" class="card-img h-75" alt="Imagen Auto">   
+                                    <img src="data:image/jpeg;base64,${auto.imagenBase64}" class="card-img h-65" alt="Imagen Auto">   
                                     <div class="card-body">
                                         <h5 class="card-title">Caracteristicas</h5> 
                                         <ol>
@@ -23,13 +23,13 @@ document.addEventListener("DOMContentLoaded", function(){
                                             </li>
                                             <li>Año modelo  :  ${auto.periodo}</li>
                                             <li>Aceleracion :  
-                                                <p class="card-text>${auto.aceleracion}</p>
+                                                <p class="card-text">${auto.aceleracion}</p>
                                             </li>
                                             <li>Velocidad   :  ${auto.velocidad}</li>
                                         </ol>                             
                                     </div>  
                                     <div class="card-footer">
-                                    <h6 class="card-title text-left">Precio: ${auto.precio}</h6>
+                                        <h6 class="card-title text-left">Precio: ${auto.precio}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -38,12 +38,15 @@ document.addEventListener("DOMContentLoaded", function(){
                 });
     }
     
-    function filterAutos(datoBuscar){        
-        const autosFiltrados = autos.filter(autos=>{           
-            return autos.marca.toLowerCase().includes(datoBuscar.toLowerCase());                       
-        });
-
-        autoCards.innerHTML = "";        
+    function filterAutos(datoBuscar){     
+        /*
+        const autosFiltrados = autos.filter(auto =>{           
+            return auto.marca.toLowerCase().includes(datoBuscar.toLowerCase());                       
+        });*/
+                          
+        const autosFiltrados = autos.filter(auto =>            
+           (auto.marca.toLowerCase().includes(datoBuscar.toLowerCase())));
+                            
         autosFiltrados.forEach(auto =>{            
             const card = document.createElement("div");
             card.className = "col-md-3 mb-4 ident";
@@ -73,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function(){
                             </div>
             `
             autoCards.appendChild(card);
+            
         });
 
     }
@@ -83,6 +87,7 @@ document.addEventListener("DOMContentLoaded", function(){
         e.preventDefault();
         const searchTerm = searchForm.querySelector("input[type='search']").value; 
         if (searchTerm!=""){
+            autoCards.innerHTML = "";
             filterAutos(searchTerm);
         }else{
             autoCards.innerHTML = "";
